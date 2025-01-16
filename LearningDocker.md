@@ -159,7 +159,7 @@ nc -lp 666 | nc -lp 999
 In one of the client terminals lets discover which port Docker assigned:
 
 ~~~
-`docker port echo-server`
+docker port echo-server
 ~~~
 
 Output should be similar to:
@@ -178,15 +178,15 @@ nc localhost 999
 
 
 ### UDP
- - `docker run -p 666:666/udp`
+ - docker run -p 666:666/udp
 
 Reusing what we alredy did: In server terminal type :
 
 ~~~
-docker run --rm -ti -p 666/udp --name echo-server ubuntu:14.04 bash`
+docker run --rm -ti -p 666/udp --name echo-server ubuntu:14.04 bash
 ~~~
 ~~~
-`docker port echo-server`
+docker port echo-server
 ~~~
 
 Lets start listening in echo-server:
