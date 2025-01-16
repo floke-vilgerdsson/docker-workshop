@@ -1,29 +1,19 @@
 # docker-ci
 ## Clonning repository
-`git clone repository`
+~~~
+git clone repository
+~~~
 
 ## Installing docker
 ### Set up Docker's apt repository.
 ~~~
-`for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove $pkg; done`
+for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove $pkg; done
    sudo apt-get update
 sudo apt-get install ca-certificates curl
 sudo install -m 0755 -d /etc/apt/keyrings
 sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
 sudo chmod a+r /etc/apt/keyrings/docker.asc
 ~~~
-
-- `for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove $pkg; done`
-
-- `sudo apt-get update`
-
-- `sudo apt-get install ca-certificates curl`
-
-- `sudo install -m 0755 -d /etc/apt/keyrings`
-
-- `sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc`
-
-- `sudo chmod a+r /etc/apt/keyrings/docker.asc`
 
 ### Add the repository to Apt sources:
 ~~~
