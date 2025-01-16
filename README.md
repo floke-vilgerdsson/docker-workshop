@@ -1,4 +1,4 @@
-# docker-ci
+# DOCKER-WORKSHOP
 ## Clonning repository
 ~~~
 git clone repository
