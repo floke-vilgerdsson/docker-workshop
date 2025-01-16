@@ -467,50 +467,27 @@ Be aware of hoe much you trust the containers you fetch
 docker containers
 
 
-## What are Dockerfiles
+## CI with Docker
 
-## Building Dockerfiles: Now let's build a dockerfile
-Let's start for the most basic dockerfile
-Make a file named Dockerfile (with a kapital D)
-and put this [FROM busybox RUN echo "building simple docker image." CMD echo "Hello Container"
-and them lets build it and run it
-The first line a dockerfile specifies what image start with, where we begin
-FROM /* I'm going to start from an image called busybox */ busybox /* it is very small and has nothing but shell in it, super tiny */
-and starting from busybox I would like to RUN, so create a container and in that container RUN echo "building simple docker image."
-after that run it is going to save it into an image, 
-and then, from that image it is going to say command `CMD /* to run when this image were started */ echo "Hello Container"`
-and save it.
+### REDMINE
+~~~
+docker run -d -p 8080:3000 --name some-redmine redmine
+~~~
 
-So I made a dockerfile, now lets build it: `docker build -t hello /* just to give it a name */` . /* just to indicate where to look for the dockerfile */
-All right it build very quickly. Lets go throught what this did
-Step 1, it created the image that we will be starting with, <image1 hash>
-Step 2 says, starting from that image, create a container and run this command. So it says, I am running this command into container <container1 hash>
-And then, we can see the "building simple docker image." writen in the screen while it was building
-Ok, That container is done and it produced this image <image2 hash>.
-Now it says it is removing an intermediate container <container1 hash> as nobody is going to use it, it is not reference further down in the dockerfile...
-Step3, now starting in image <image2 hash>, it says it is setting the command to be run when this container starts, so it is updating the state of the image.
-That's resulting in a container <container3 hash> which them was commited to produce the image <image3 hash>
-And again as no further use for the container <container2 hash>, I am cleaning up that intermediate container, <container2 hash>
-And the final result is the image <image3 hash>, the same that the last step with the name "hello", even if no traces in the screen
-With that we have walk throught the full building process for a very simple dockerfile
-Lets run it and see if it works
-`docker run --rm /* just to clean-up the container afterwards */ hello`
-Hello container!
+### JENKINS
+~~~
+docker run -p 8081:8080 -p 50000:50000 jenkins/jenkins:lts-jdk17
+~~~
 
-Here we can a see slightly more interesting dockerfile which actually install something in the image
-Starting from debian, update the latest available packages/* -y is to answer yes to go ahead for the update */, install nano
-And this image when you run it, opens-up a notes file for you to type some notes in.
-`CMD ["/bin/nano", "/tmp/notes"]`
-`docker build -t nanoer .`
-`docker run --rm -ti /* as I am running an interactive command , I want to run it in interactive mode */ nanoer`
-Et voila, nano opened!
-
-Here we can see another example, that shows as we can reuse the previous generated image and add more to it. This is quite was make dockerfiles cool, the way you can change them together to build on each other.
-On Step 2 we are adding a file called notes.txt `ADD notes.txt /notes.txt`
-On Step 3, lets use our precreated notes.txt file: `CMD ["/bin/nano", "/notes.txt]
-Create the file: vi notes.txt and add some text: "TODO: learn more about dockerfiles"
-`docker build -t notes .`
-`docker run -ti --rm notes`
-Allright!
-
-
+### GITEA
+~~~
+docker run \
+	-d \
+	-p 3000:3000 \
+	-p 2222:2222 \
+	-v /etc/localtime:/etc/localtime:ro \
+	-v /etc/timezone:/etc/timezone:ro \
+	-v ./gitea/config:/etc/gitea \
+	-v ./gitea/data:/var/lib/gitea \
+	docker.io/gitea/gitea:1.23.1-rootless
+~~~
