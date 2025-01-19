@@ -489,7 +489,74 @@ docker run \
 	-p 2222:2222 \
 	-v /etc/localtime:/etc/localtime:ro \
 	-v /etc/timezone:/etc/timezone:ro \
-	-v ./gitea/config:/etc/gitea \
-	-v ./gitea/data:/var/lib/gitea \
+	-v ./srv/gitea/config:/etc/gitea \
+	-v ./srv/gitea/data:/var/lib/gitea \
 	docker.io/gitea/gitea:1.23.1-rootless
 ~~~
+
+### REDMINE with MARIABD
+Lets prepare some folders to be used as "shared_folder" between host and containers and keep some persistent data
+~~~
+mkdir -p /srv/docker/redmine/redmine
+~~~
+Lets get up redmine and mariadb containers using a prepared docker-compose.yml file:
+~~~
+cd rdmdb && docker compose up
+~~~
+On a 2nd terminal lets copy our projects backup sql file to our mariadb container:
+~~~
+docker cp ~/Downloads/backup_Proyecto.sql rdmdb-db-1:/
+~~~
+and execute a bash process in our mariadb container:
+~~~
+docker exec -ti rdmdb-db-1 bash
+~~~
+Lets import our projects backup sql file:
+~~~
+mariadb -u redmine -p redmine_production < /backup_Proyecto.sql
+~~~
+Note : remember admin user and pwd: toni/toni2022
+
+Getting up a GNAT container with a shared folder with some basic Hello World example
+~~~
+docker run --rm -ti -v ./hello:/hello alire/gnat:ubuntu-lts bash
+~~~
+~~~
+cd hello && gnatmake hello.adb && ./hello
+~~~
+
+###Using GITEA
+Creates a repository called hello-world using web-based gitea
+Once created, lets clone it for adding some code:
+~~~
+git clone http://localhost:3000/admin/hello-world.git
+~~~
+Copy code from our sources:
+~~~
+cp docker-workshop/rdmdb/hello/hello.adb hello-world/
+~~~
+Move inside hello-world folder:
+~~~
+cd hello-world/
+~~~
+Stage the added file:
+~~~
+git add hello.adb 
+~~~
+Commit staged changes:
+~~~
+git commit -m "adding hello world source code"
+~~~
+Push changes to server repository. It should ask for user and password. Use the one configured as admin when installing gitea:
+~~~
+git push
+~~~
+
+Linking new repository and redmine. Lets clone as mirror anywhere in data shared folder for redmine. In this case redmine works with the shared folder srv/redmine/redmine-data:/home/redmine/data
+Lets add a folder named repos and inside it type:
+~~~
+git clone --mirror http://localhost:3000/admin/hello-world.git
+~~~
+Note: In redmine [documentation](https://www.redmine.org/projects/redmine/wiki/HowTo_Easily_integrate_a_(SSH_secured)_GIT_repository_into_redmine) we can see we need to clone the repository as a MIRROR
+
+Now, directly in project/configuration lets add the cloned repository
