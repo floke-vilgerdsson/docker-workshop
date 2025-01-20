@@ -25,7 +25,7 @@ docker run -ti ubuntu bash -c "sleep 3; echo 'well done'"
 ~~~
 docker run -d -ti ubuntu bash
 ~~~
- it will start the process bash and keep it running in the background.
+it will start the process bash and keep it running in the background.
 ~~~
 docker ps
 ~~~
@@ -105,7 +105,6 @@ So let go ahead and clean-up: `docker rm <container_name_copied>`
 ~~~
 
 ## Exposing ports (-p)
- - By default containers are isolated from the internet.
  - Connect to containers together 
  - Connect containers to the internet. By default containers are isolated from the internet.
 
@@ -303,8 +302,8 @@ pwd
 Lets create a container to share that folder into:
 
 ~~~
-docker run -ti \ # Here start the new part
-            -v <pwd_folder>/example:/shared-folder \ # Specifies the folder path, then after a colon, I am going to specify the path within the container where the shared folder will be found
+docker run -ti \
+            -v <pwd_folder>/example:/shared-folder \
             ubuntu \
             bash
 ~~~
@@ -495,45 +494,49 @@ docker run \
 ~~~
 
 ### REDMINE with MARIABD
-Lets prepare some folders to be used as "shared_folder" between host and containers and keep some persistent data
+Lets prepare some folders to be used as "shared folder" between host and containers and keep some persistent data
 ~~~
 mkdir -p /srv/docker/redmine/redmine
 ~~~
 Lets get up redmine and mariadb containers using a prepared docker-compose.yml file:
 ~~~
-cd rdmdb && docker compose up
+cd redwine && docker compose up
 ~~~
 On a 2nd terminal lets copy our projects backup sql file to our mariadb container:
 ~~~
-docker cp ~/Downloads/backup_Proyecto.sql rdmdb-db-1:/
+docker cp ~/Downloads/backup_sii_project.sql redwine-db-1:/
 ~~~
 and execute a bash process in our mariadb container:
 ~~~
-docker exec -ti rdmdb-db-1 bash
+docker exec -ti redwine-db-1 bash
 ~~~
 Lets import our projects backup sql file:
 ~~~
-mariadb -u redmine -p redmine_production < /backup_Proyecto.sql
+mariadb -u redmine -p redmine_production < /backup_sii_project
 ~~~
 Note : remember admin user and pwd: toni/toni2022
 
 Getting up a GNAT container with a shared folder with some basic Hello World example
 ~~~
-docker run --rm -ti -v ./hello:/hello alire/gnat:ubuntu-lts bash
+docker run --rm -ti -v ./hello-world:/hello-world alire/gnat:ubuntu-lts bash
 ~~~
 ~~~
-cd hello && gnatmake hello.adb && ./hello
+cd hello-world && gnatmake hello-world.adb && ./hello-world
 ~~~
 
 ###Using GITEA
 Creates a repository called hello-world using web-based gitea
-Once created, lets clone it for adding some code:
+Once created, lets clone it for adding some code, but first to our workspace
+~~~
+cd $HOME/Worspace
+~~~
+and 
 ~~~
 git clone http://localhost:3000/admin/hello-world.git
 ~~~
 Copy code from our sources:
 ~~~
-cp docker-workshop/rdmdb/hello/hello.adb hello-world/
+cp docker-workshop/hello-world/hello-world.adb hello-world/
 ~~~
 Move inside hello-world folder:
 ~~~
@@ -541,7 +544,7 @@ cd hello-world/
 ~~~
 Stage the added file:
 ~~~
-git add hello.adb 
+git add hello-world.adb 
 ~~~
 Commit staged changes:
 ~~~
