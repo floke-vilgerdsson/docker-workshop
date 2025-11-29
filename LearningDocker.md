@@ -528,7 +528,6 @@ Lets import our projects backup sql file:
 ~~~
 mariadb -u redmine -p redmine_production < /backup_sii_project
 ~~~
-Note : remember admin user and pwd: toni/toni2022
 
 Getting up a GNAT container with a shared folder with some basic Hello World example
 ~~~
