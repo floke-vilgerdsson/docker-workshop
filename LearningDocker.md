@@ -512,7 +512,7 @@ docker run \
 ### REDMINE with MARIABD
 Lets prepare some folders to be used as "shared folder" between host and containers and keep some persistent data
 ~~~
-mkdir -p /srv/docker/redmine/redmine
+mkdir -p ./srv/docker/redmine/redmine
 ~~~
 Lets get up redmine and mariadb containers using a prepared docker-compose.yml file:
 ~~~
