@@ -5,16 +5,16 @@
 docker run hello-world
 ~~~
 
-## Manage Docker as a non-root user
-### Create the docker group.
+### Manage Docker as a non-root user
+#### Create the docker group.
 ~~~
 sudo groupadd docker
 ~~~
-### Add your user to the docker group.
+#### Add your user to the docker group.
 ~~~
 sudo usermod -aG docker $USER
 ~~~
-### Activate the changes to groups
+#### Activate the changes to groups
 ~~~
 newgrp docker
 ~~~
