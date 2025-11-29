@@ -5,7 +5,7 @@
 docker run hello-world
 ~~~
 
-Manage Docker as a non-root user
+### Manage Docker as a non-root user
 
 #### Create the docker group.
 ~~~
@@ -22,6 +22,7 @@ newgrp docker
 
 ## Docker flow: image vs containers
 `docker pull <image_name>`
+
 `docker run <image_name>`
 
 
